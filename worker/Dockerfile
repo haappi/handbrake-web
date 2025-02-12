@@ -11,13 +11,16 @@ RUN sed -i -e's/ main/ main contrib non-free non-free-firmware/g' /etc/apt/sourc
 # 	echo "Pin: release a=unstable" >> /etc/apt/preferences.d/prferences && \
 # 	echo "Pin-Priority: 450" >> /etc/apt/preferences.d/prferences
 RUN apt update
-
+RUN apt install -y curl
 # Install mesa and intel media drivers
 RUN if [ $TARGETARCH = "amd64" ]; then \
 	apt install -y mesa-utils mesa-va-drivers mesa-vulkan-drivers intel-media-va-driver-non-free vainfo \
 	; fi
 # Install handbrake
-RUN apt install -y handbrake-cli
+
+# RUN apt install -y handbrake-cli
+RUN curl -o /usr/local/bin/HandBrakeCLI https://github.com/haappi/handbrake-web/raw/refs/heads/main/HandBrakeCLI && \
+    chmod +x /usr/local/bin/HandBrakeCLI
 # Install dumb-init
 RUN apt install -y dumb-init
 
